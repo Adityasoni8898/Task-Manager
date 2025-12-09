@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from .models import Task
 from .serializers import TaskSerializer
 from .permissions import IsOwnerOrAdmin
+from .paginations import CustomListPagination
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -13,6 +14,7 @@ class TaskViewSet(viewsets.ModelViewSet):
     """
     serializer_class = TaskSerializer
     permission_classes = (IsOwnerOrAdmin,)
+    pagination_class = CustomListPagination
 
     def get_queryset(self):
         user = self.request.user
