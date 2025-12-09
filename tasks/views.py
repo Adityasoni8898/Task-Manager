@@ -12,7 +12,7 @@ class TaskViewSet(viewsets.ModelViewSet):
     This allows CRUD operations on Tasks
     """
     serializer_class = TaskSerializer
-    permission_classes = (IsOwnerOrAdmin)
+    permission_classes = (IsOwnerOrAdmin,)
 
     def get_queryset(self):
         user = self.request.user

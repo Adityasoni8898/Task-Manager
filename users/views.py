@@ -21,3 +21,13 @@ class CustomTokenObtainPairView(TokenObtainPairView):
     it returns JWT tokens
     """
     permission_classes = (permissions.AllowAny,)
+
+# Admin only endpoint
+class AllUsersListView(generics.ListAPIView):
+    """
+    Call -> GET /api/users/
+    it returns list of all users
+    """
+    queryset = User.objects.all()
+    permission_classes = (IsAdmin,)
+    serializer_class = RegisterSerializer
