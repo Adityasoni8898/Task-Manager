@@ -50,8 +50,8 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(os.getenv("ACCESS_TOKEN_LIFETIME", 3600)),
-    'REFRESH_TOKEN_LIFETIME': timedelta(os.getenv("REFRESH_TOKEN_LIFETIME", 86400)),
+    'ACCESS_TOKEN_LIFETIME': timedelta(seconds=int(os.getenv("ACCESS_TOKEN_LIFETIME_SECONDS", 3600))),
+    'REFRESH_TOKEN_LIFETIME': timedelta(seconds=int(os.getenv("REFRESH_TOKEN_LIFETIME_SECONDS", 86400))),
 }
 
 ROOT_URLCONF = 'Task_Manager.urls'

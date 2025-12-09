@@ -2,7 +2,7 @@ from rest_framework import generics, permissions
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.models import User
 from .serializers import RegisterSerializer
-from .permissions import IsAdmin
+from .permissions import IsAdminUserOrAdminGroup
 
 
 class RegisterView(generics.CreateAPIView):
@@ -29,5 +29,5 @@ class AllUsersListView(generics.ListAPIView):
     it returns list of all users
     """
     queryset = User.objects.all()
-    permission_classes = (IsAdmin,)
+    permission_classes = [IsAdminUserOrAdminGroup]
     serializer_class = RegisterSerializer

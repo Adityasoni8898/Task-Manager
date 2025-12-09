@@ -1,7 +1,8 @@
-from rest_framework import permissions
+from rest_framework.permissions import BasePermission
 
-
-class IsAdmin(permissions.BasePermission):
-    # Allow only admin users
+class IsAdminUserOrAdminGroup(BasePermission):
     def has_permission(self, request, view):
-        return request.user and request.user.is_staff
+        return (
+            request.user.is_staff
+            or request.user.groups.filter(name="admin").exists()
+        )

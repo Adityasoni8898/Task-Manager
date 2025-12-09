@@ -6,10 +6,25 @@ class IsOwnerOrAdmin(permissions.BasePermission):
     Allow only owner or admins to read or write
     """
 
-    def has_object_permission(self, request, view, obj):
-        # This is for read permissions
-        if request.method in permissions.SAFE_METHODS:
-            return request.user.is_staff or obj.owner == request.user
+    def has_permission(self, request, view):
+        # allow logged in users
+        if not request.user.is_authenticated:
+            return False
 
-        # This is for write permissions
-        return request.user.is_staff or obj.owner == request.user
+        # staff is allowed
+        if request.user.is_staff:
+            return True
+
+        # admin group is allowed
+        if request.user.groups.filter(name="admin").exists():
+            return True
+
+        # otherwise normal permission logic continues
+        return True
+
+    def has_object_permission(self, request, view, obj):
+        if request.user.is_staff or request.user.groups.filter(name="admin").exists():
+            return True
+
+        # owner only
+        return obj.owner == request.user
