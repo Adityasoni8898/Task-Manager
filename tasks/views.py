@@ -11,6 +11,8 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
 
+def is_admin_check(user):
+    return user.groups.filter(name="admin").exists()
 
 class TaskViewSet(viewsets.ModelViewSet):
     """
@@ -32,14 +34,15 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
+        is_admin = is_admin_check(user)
 
-        queryset = Task.objects.all() if user.is_staff else Task.objects.filter(owner=user)
+        queryset = Task.objects.all() if is_admin else Task.objects.filter(owner=user)
 
         # filter by owner, only for staff
         owner_param = self.request.query_params.get("owner")
 
         if owner_param:
-            if not user.is_staff:
+            if not is_admin:
                 raise PermissionDenied("You do not have permission to filter by owner.")
 
             queryset = queryset.filter(owner__username=owner_param)
