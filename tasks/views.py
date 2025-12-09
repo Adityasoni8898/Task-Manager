@@ -7,6 +7,7 @@ from .serializers import TaskSerializer
 from .permissions import IsOwnerOrAdmin
 from .paginations import CustomListPagination
 from .models import TaskStatus
+from rest_framework.exceptions import PermissionDenied
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -19,9 +20,24 @@ class TaskViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user = self.request.user
-        if user.is_staff:
-            return Task.objects.all()
-        return Task.objects.filter(owner=user)
+
+        queryset = Task.objects.all() if user.is_staff else Task.objects.filter(owner=user)
+
+        # filter by status
+        status_param = self.request.query_params.get("status")
+        if status_param in TaskStatus.values:
+            queryset = queryset.filter(status=status_param)
+
+        # filter by owner, only for staff
+        owner_param = self.request.query_params.get("owner")
+
+        if owner_param:
+            if not user.is_staff:
+                raise PermissionDenied("You do not have permission to filter by owner.")
+
+            queryset = queryset.filter(owner__username=owner_param)
+
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
