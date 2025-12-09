@@ -6,6 +6,7 @@ from .models import Task
 from .serializers import TaskSerializer
 from .permissions import IsOwnerOrAdmin
 from .paginations import CustomListPagination
+from .models import TaskStatus
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -32,6 +33,10 @@ class TaskViewSet(viewsets.ModelViewSet):
         it toggles task status
         """
         task = self.get_object()
-        task.status = not task.status
+        task.status = (
+            TaskStatus.COMPLETE
+            if task.status == TaskStatus.INCOMPLETE
+            else TaskStatus.INCOMPLETE
+        )
         task.save()
         return Response(self.get_serializer(task).data)
