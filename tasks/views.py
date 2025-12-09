@@ -21,15 +21,18 @@ class TaskViewSet(viewsets.ModelViewSet):
     pagination_class = CustomListPagination
     filter_backends = [
         DjangoFilterBackend,
-        filters.SearchFilter
+        filters.SearchFilter,
+        filters.OrderingFilter,
     ]
     
     filterset_fields = ["status"]
     search_fields = ["title", "description"]
+    ordering_fields = ["due_date", "created_at"]
+    ordering = ["due_date"]  # default ordering by due_date
 
     def get_queryset(self):
         user = self.request.user
-        
+
         queryset = Task.objects.all() if user.is_staff else Task.objects.filter(owner=user)
 
         # filter by owner, only for staff

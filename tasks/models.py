@@ -17,6 +17,7 @@ class Task(models.Model):
         choices=TaskStatus.choices,
         default=TaskStatus.INCOMPLETE
     )
+    due_date = models.DateField(null=True, blank=True) 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     owner = models.ForeignKey(User, on_delete=models.CASCADE, related_name='tasks')
