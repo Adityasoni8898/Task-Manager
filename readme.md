@@ -20,7 +20,7 @@ You can run this project using two methods:
 
 ### 1. Clone the Repository
 
-```bash
+```
 git clone <repo-url>
 cd Task-Manager
 ```
@@ -116,6 +116,13 @@ Add the access token to the header:
 ```
 curl -H "Authorization: Bearer <token>" http://127.0.0.1:8000/api/tasks/
 ```
+
+Also you can use Django Admin Login for API Access (Browser Only)
+
+If you log in through the Django Admin (/admin/), the browser saves your session cookie.
+This means you can visit API endpoints like: <br>
+`http://127.0.0.1:8000/api/tasks/` <br>
+without receiving a 401 Unauthorized, even without sending a JWT token.
 ## Roles: Admin and User
 
 Roles are managed using Django's built-in Group model.
