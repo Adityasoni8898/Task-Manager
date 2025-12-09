@@ -8,6 +8,8 @@ from .permissions import IsOwnerOrAdmin
 from .paginations import CustomListPagination
 from .models import TaskStatus
 from rest_framework.exceptions import PermissionDenied
+from rest_framework import filters
+from django_filters.rest_framework import DjangoFilterBackend
 
 
 class TaskViewSet(viewsets.ModelViewSet):
@@ -17,16 +19,18 @@ class TaskViewSet(viewsets.ModelViewSet):
     serializer_class = TaskSerializer
     permission_classes = (IsOwnerOrAdmin,)
     pagination_class = CustomListPagination
+    filter_backends = [
+        DjangoFilterBackend,
+        filters.SearchFilter
+    ]
+    
+    filterset_fields = ["status"]
+    search_fields = ["title", "description"]
 
     def get_queryset(self):
         user = self.request.user
-
+        
         queryset = Task.objects.all() if user.is_staff else Task.objects.filter(owner=user)
-
-        # filter by status
-        status_param = self.request.query_params.get("status")
-        if status_param in TaskStatus.values:
-            queryset = queryset.filter(status=status_param)
 
         # filter by owner, only for staff
         owner_param = self.request.query_params.get("owner")
