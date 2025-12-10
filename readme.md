@@ -147,9 +147,9 @@ python manage.py create_roles
 
 | Method | Endpoint | Description |
 |--------|-------------------|--------------------------|
-| POST | `api/auth/register/` | Register a new user |
-| POST | `api/auth/login/` | Obtain JWT tokens |
-| POST | `api/auth/refresh/` | Refresh access token |
+| POST | `/api/auth/register/` | Register a new user |
+| POST | `/api/auth/login/` | Obtain JWT tokens |
+| POST | `/api/auth/refresh/` | Refresh access token |
 
 ### User Management (Admin only)
  
@@ -166,7 +166,7 @@ python manage.py create_roles
 | POST | `/api/tasks/` | Create a task |
 | GET | `/api/tasks/<id>/` | Retrieve a specific task |
 | PUT | `/api/tasks/<id>/` | Update a task |
-| POST | `api/tasks/<id>/toggle/` | Toggles status between COMPLETE and INCOMPLETE |
+| POST | `/api/tasks/<id>/toggle/` | Toggles status between COMPLETE and INCOMPLETE |
 | DELETE | `/api/tasks/<id>/` | Delete a task |
 
 
@@ -180,17 +180,20 @@ python manage.py create_roles
 | Sort by due date | `GET /api/tasks/?ordering=due_date` |
 | Sort descending | `GET /api/tasks/?ordering=-due_date` |
 | Sort by created_at | `GET /api/tasks/?ordering=created_at` |
-| Pagination | Automatically applied on `GET /api/task/` (page_size = 10) |
+| Pagination | Automatically applied on `GET /api/tasks/` (page_size = 10) |
 
 ## Project Files
-- Dockerfile
-- docker-compose.yml
--  .env.example
-- requirements.txt
-- Django project
-	- Task_Manager
-	- users app
-	- tasks app
+| File / Folder       | Description |
+|---------------------|-------------|
+| **Dockerfile**      | Used to build the Docker image for running the Django application in a containerized environment. |
+| **docker-compose.yml** | Defines services for running the application using Docker Compose (e.g., Django app, environment variables). Simplifies starting the project with one command. |
+| **.env.example**    | Template file containing example environment variables required by the project. Users can copy it to `.env` and fill in values. |
+| **requirements.txt**| Contains all Python dependencies needed to run the project. Used for `pip install -r requirements.txt`. |
+| **manage.py** | Django’s main command-line utility for running the server, migrations, management commands, etc. |
+| **/Task_Manager**   | Main project root containing settings, URLs, and configuration for the Django backend. |
+| **/users**          | Django app responsible for user registration, JWT authentication endpoints, and role/group management logic. |
+| **/tasks**          | Django app containing Task model, serializers, views, filtering, sorting, pagination, and task-related API endpoints. |
+
 
 ## Extra Features Implemented
 - Task list pagination
