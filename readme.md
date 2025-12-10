@@ -73,7 +73,7 @@ docker compose up --build
 The Django app will be available on  **port 8000**.
 ## User Registration & Authentication
 ### Register a User
-`POST /auth/register/`
+`POST api/auth/register/`
 ```
 {
 	"username": "user1",
@@ -82,7 +82,7 @@ The Django app will be available on  **port 8000**.
 }
 ```
 ### Obtain JWT Tokens (Login)
-`POST /auth/login/`
+`POST api/auth/login/`
 ```
 {
 	"username": "user1",
@@ -97,7 +97,7 @@ The Django app will be available on  **port 8000**.
 }
 ```
 ### Refresh Token
-`POST /auth/refresh/`
+`POST api/auth/refresh/`
   
 ```
 {
@@ -147,9 +147,9 @@ python manage.py create_roles
 
 | Method | Endpoint | Description |
 |--------|-------------------|--------------------------|
-| POST | `/auth/register/` | Register a new user |
-| POST | `/auth/login/` | Obtain JWT tokens |
-| POST | `/auth/refresh/` | Refresh access token |
+| POST | `api/auth/register/` | Register a new user |
+| POST | `api/auth/login/` | Obtain JWT tokens |
+| POST | `api/auth/refresh/` | Refresh access token |
 
 ### User Management (Admin only)
  
@@ -166,6 +166,7 @@ python manage.py create_roles
 | POST | `/api/tasks/` | Create a task |
 | GET | `/api/tasks/<id>/` | Retrieve a specific task |
 | PUT | `/api/tasks/<id>/` | Update a task |
+| POST | `api/tasks/<id>/toggle/` | Toggles status between COMPLETE and INCOMPLETE |
 | DELETE | `/api/tasks/<id>/` | Delete a task |
 
 
@@ -179,7 +180,7 @@ python manage.py create_roles
 | Sort by due date | `GET /api/tasks/?ordering=due_date` |
 | Sort descending | `GET /api/tasks/?ordering=-due_date` |
 | Sort by created_at | `GET /api/tasks/?ordering=created_at` |
-| Pagination | Automatically applied (page_size = 10) |
+| Pagination | Automatically applied on `GET /api/task/` (page_size = 10) |
 
 ## Project Files
 - Dockerfile
@@ -187,6 +188,7 @@ python manage.py create_roles
 -  .env.example
 - requirements.txt
 - Django project
+	- Task_Manager
 	- users app
 	- tasks app
 
