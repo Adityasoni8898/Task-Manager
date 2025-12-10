@@ -142,6 +142,14 @@ python manage.py create_roles
 4. Add them to the desired group (admin, user, etc.)
 ## API Endpoints
 
+### Postman Collection Json
+The project includes a Postman collection that contains all API endpoints divided into:
+* User Auth
+* Tasks
+	- CRUD Urls
+	- Query Params Urls
+
+Just Import into postman, details about all endpoints given ahead
 
 ### Authentication
 
@@ -189,6 +197,7 @@ python manage.py create_roles
 | **docker-compose.yml** | Defines services for running the application using Docker Compose (e.g., Django app, environment variables). Simplifies starting the project with one command. |
 | **.env.example**    | Template file containing example environment variables required by the project. Users can copy it to `.env` and fill in values. |
 | **requirements.txt**| Contains all Python dependencies needed to run the project. Used for `pip install -r requirements.txt`. |
+| **Codesis_Assignment.postman_collection.json**| Postman Collection with ready made requests |
 | **manage.py** | Django’s main command-line utility for running the server, migrations, management commands, etc. |
 | **/Task_Manager**   | Main project root containing settings, URLs, and configuration for the Django backend. |
 | **/users**          | Django app responsible for user registration, JWT authentication endpoints, and role/group management logic. |
