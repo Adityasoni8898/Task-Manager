@@ -26,8 +26,6 @@ class TaskViewSet(viewsets.ModelViewSet):
         filters.SearchFilter,
         filters.OrderingFilter,
     ]
-    
-    filterset_fields = ["status"]
     search_fields = ["title", "description"]
     ordering_fields = ["due_date", "created_at"]
     ordering = ["due_date"]  # default ordering by due_date
@@ -37,6 +35,13 @@ class TaskViewSet(viewsets.ModelViewSet):
         is_admin = is_admin_check(user)
 
         queryset = Task.objects.all() if is_admin else Task.objects.filter(owner=user)
+
+        # filter by status (case-insensitive)
+        status_param = self.request.query_params.get("status")
+        if status_param:
+            normalized = status_param.upper()
+            if normalized in TaskStatus.values:
+                queryset = queryset.filter(status=normalized)
 
         # filter by owner, only for staff
         owner_param = self.request.query_params.get("owner")
